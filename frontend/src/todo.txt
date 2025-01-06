@@ -1,0 +1,6 @@
+x current hour, with current time marked in middle
+- figure out how to zoom out or something
+
+in space, there is x,y and zoom level (or z)
+
+in time, there is just x and zoom level (or z) - but remember that is the camera
