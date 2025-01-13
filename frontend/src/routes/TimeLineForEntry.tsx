@@ -1,14 +1,16 @@
 import { useAtom } from "jotai";
-import { currentSecondsAtom, dateNowAtom, timezoneOffsetAtom } from "../atoms";
+import { currentSecondsAtom, dateNowAtom } from "../atoms";
 import { EntryType } from "../types";
 import { dateToReadableTime, secondsToReadableTime } from "../shared/utils";
 
 export function TimeLineForEntry({ entry }: { entry: EntryType }) {
   const [currentSeconds] = useAtom(currentSecondsAtom);
   const [dateNow] = useAtom(dateNowAtom);
-  const [timezoneOffset] = useAtom(timezoneOffsetAtom);
 
-  const restoreTimezone = (seconds: number) => seconds - timezoneOffset;
+  const percent =
+    Math.round(((currentSeconds - entry.startTime) / entry.duration) * 1000) /
+      10 +
+    "%";
 
   return (
     <div className="absolute inset-0 flex flex-col justify-between">
@@ -26,12 +28,13 @@ export function TimeLineForEntry({ entry }: { entry: EntryType }) {
             lineHeight: 1.1,
           }}
         >
+          {percent}
           {entry.label}
         </div>
       </div>
       <div className="flex relative justify-between w-full px-3 py-2">
         <div className="text-2xl text-center relative">
-          <div>{secondsToReadableTime(restoreTimezone(entry.startTime))}</div>
+          <div>{secondsToReadableTime(entry.startTime)}</div>
         </div>
         <div className="text-2xl text-center relative">
           <div className="flex items-baseline">
@@ -39,13 +42,13 @@ export function TimeLineForEntry({ entry }: { entry: EntryType }) {
             <div className="text-lg">
               :{(currentSeconds % 60).toString().padStart(2, "0")}
             </div>
-            <div className="ml-2 text-sm uppercase">{dateToReadableTime(dateNow).split(" ")[1]}</div>
+            <div className="ml-2 text-sm uppercase">
+              {dateToReadableTime(dateNow).split(" ")[1]}
+            </div>
           </div>
         </div>
         <div className="text-2xl text-center relative">
-          {secondsToReadableTime(
-            restoreTimezone(entry.startTime + entry.duration),
-          )}
+          {secondsToReadableTime(entry.startTime + entry.duration)}
         </div>
       </div>
     </div>
