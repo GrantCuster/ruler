@@ -13,7 +13,7 @@ body {
 }
 
 input,
-textarea {
-  background: theme("colors.neutral.800");
+textarea, select {
+  background: theme("colors.neutral.900");
   color: theme("colors.neutral.100");
 }

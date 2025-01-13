@@ -1,6 +1,6 @@
-export type Entry = {
-  startTime: string;
-  durationMs: number;
+export type EntryType = {
+  startTime: number;
+  duration: number;
   label: string;
   id: string;
 }

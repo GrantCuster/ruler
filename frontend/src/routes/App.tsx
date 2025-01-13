@@ -1,61 +1,42 @@
 import { useEffect, useState } from "react";
-import { getSeconds } from "../shared/utils";
+import {
+  dateNowAtom,
+  showFormAtom,
+} from "../atoms";
+import { useAtom } from "jotai";
+import { HandleTick } from "./HandleTick";
+import { Timeline } from "./Timeline";
 
 export function App() {
-  const [bump, setBump] = useState(0);
+  const [, setShowForm] = useAtom(showFormAtom);
+  const [dateNow] = useAtom(dateNowAtom);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setBump((bump) => bump + 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
+    function handleKeyPress(e: KeyboardEvent) {
+      if (e.key === "a") {
+        setShowForm(true);
+      }
+    }
+    window.addEventListener("keydown", handleKeyPress);
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
   }, []);
 
-  const now = new Date();
-  const timeZoneOffset = now.getTimezoneOffset() * 60;
-  const seconds = getSeconds(now) - timeZoneOffset;
-
-  const hourSeconds = 3600;
-  const daySeconds = 86400;
-
-  const flooredDay = Math.floor(seconds / daySeconds) * daySeconds;
-  const percent = (seconds - flooredDay) / daySeconds;
-
   return (
-    <div className="w-full h-[100dvh]">
-      {[...Array(24)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute h-full bottom-0 w-[2px] bg-neutral-700"
-          style={{ left: `calc(${(i / 24) * 100}% - 1px)` }}
-        ></div>
-      ))}
-      {[...Array(24)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute h-full bottom-0 w-[2px] bg-neutral-800"
-          style={{ left: `calc(${((i + 0.5) / 24) * 100}% - 1px)` }}
-        ></div>
-      ))}
-      {[...Array(24)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute h-full bottom-0 w-[2px] bg-neutral-900"
-          style={{ left: `calc(${((i + 0.25) / 24) * 100}% - 1px)` }}
-        ></div>
-      ))}
-      {[...Array(24)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute h-full bottom-0 w-[2px] bg-neutral-900"
-          style={{ left: `calc(${((i + 0.75) / 24) * 100}% - 1px)` }}
-        ></div>
-      ))}
+    <>
+      <HandleTick />
       <div
-        className="bg-red-500 w-[2px] h-[100%] absolute top-0 left-[calc(50%-1px)]"
-        style={{ left: percent * 100 + "%" }}
-      ></div>
-    </div>
+        className="w-full h
+      -[100dvh] flex flex-col"
+      >
+        <div className="hidden">
+          {dateNow.getHours()}:{dateNow.getMinutes()}
+        </div>{" "}
+        <div className="grow relative">
+          <Timeline />
+        </div>
+      </div>
+    </>
   );
 }
