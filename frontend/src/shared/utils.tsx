@@ -1,5 +1,5 @@
 export function dateToSeconds(date: Date) {
-  return Math.round(date.getTime() / 1000);
+  return Math.floor(date.getTime() / 1000);
 }
 
 // async load image
@@ -34,7 +34,7 @@ export function dateToReadableTime(date: Date): string {
 
 export function secondsToReadableTime(seconds: number): string {
   const timezoneOffset = (new Date()).getTimezoneOffset();
-  const date = new Date((seconds - timezoneOffset * 60) * 1000); // Convert seconds to milliseconds
+  const date = new Date((seconds + timezoneOffset * 60) * 1000); // Convert seconds to milliseconds
 
   return dateToReadableTime(date);
 }

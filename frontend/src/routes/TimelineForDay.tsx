@@ -19,7 +19,7 @@ export function TimelineForDay() {
   // TODO figure out the timezone issue
   const flooredDay =
     Math.floor(currentSeconds / secondsInDay) *
-    secondsInDay + timezoneOffset * 2;
+    secondsInDay;
   const percent = (currentSeconds - flooredDay) / secondsInDay;
 
   return (
@@ -59,7 +59,6 @@ export function TimelineForDay() {
       {entries.map((entry, i) => {
         return <Entry key={i} entry={entry} />;
       })}
-      {showForm ? <AddForm /> : null}
     </>
   );
 }

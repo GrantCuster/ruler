@@ -16,7 +16,7 @@ export function HandleTick() {
       const now = new Date();
       const timeZoneOffsetInSeconds = now.getTimezoneOffset() * 60;
       const seconds = dateToSeconds(now);
-      setCurrentSeconds(seconds + timeZoneOffsetInSeconds);
+      setCurrentSeconds(seconds - timeZoneOffsetInSeconds);
       setDateNow(now);
     }
 
