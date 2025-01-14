@@ -1,15 +1,25 @@
 import { useAtom } from "jotai";
-import { showFormAtom, entriesAtom, currentSecondsAtom } from "../atoms";
-import { secondsInDay } from "../shared/consts";
+import {
+  showFormAtom,
+  entriesAtom,
+  currentSecondsAtom,
+  timezoneOffsetAtom,
+} from "../atoms";
+import { secondsInDay, secondsInHour } from "../shared/consts";
 import { AddForm } from "./AddForm";
 import { Entry } from "./Entry";
+import { secondsToReadableTime } from "../shared/utils";
 
 export function TimelineForDay() {
   const [showForm] = useAtom(showFormAtom);
   const [entries] = useAtom(entriesAtom);
   const [currentSeconds] = useAtom(currentSecondsAtom);
+  const [timezoneOffset] = useAtom(timezoneOffsetAtom);
 
-  const flooredDay = Math.floor(currentSeconds / secondsInDay) * secondsInDay;
+  // TODO figure out the timezone issue
+  const flooredDay =
+    Math.floor(currentSeconds / secondsInDay) *
+    secondsInDay + timezoneOffset * 2;
   const percent = (currentSeconds - flooredDay) / secondsInDay;
 
   return (
@@ -53,4 +63,3 @@ export function TimelineForDay() {
     </>
   );
 }
-

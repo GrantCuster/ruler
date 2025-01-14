@@ -28,8 +28,8 @@ export function TimeLineForEntry({ entry }: { entry: EntryType }) {
             lineHeight: 1.1,
           }}
         >
-          {percent}
-          {entry.label}
+          <div>{entry.label}</div>
+          <div>{percent}</div>
         </div>
       </div>
       <div className="flex relative justify-between w-full px-3 py-2">
