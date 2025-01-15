@@ -4,3 +4,5 @@ export type EntryType = {
   label: string;
   id: string;
 }
+
+export type ThemeType = "progress" | "debug"

@@ -1,8 +1,9 @@
 
-import { currentSecondsAtom, entriesAtom, focusModeAtom, showFormAtom } from "../atoms";
+import { currentSecondsAtom, entriesAtom, focusModeAtom, selectedThemeAtom, showFormAtom } from "../atoms";
 import { TimelineForDay } from "./TimelineForDay";
 import { EntryType } from "../types";
-import { TimeLineForEntry } from "./TimeLineForEntry";
+import { TimeLineForEntry } from "./Progress";
+import { TimeLineDebug } from "./Debug";
 import { useAtom } from "jotai";
 
 export function Timeline() {
@@ -33,6 +34,13 @@ export function Timeline() {
 }
 
 export function TimelineContainer({ entry }: { entry: EntryType | null }) {
-  return <TimeLineForEntry entry={entry} />;
-  // return <TimeLineDebug entry={entry} />;
+  const [selectedTheme] = useAtom(selectedThemeAtom);
+
+  console.log("selectedTheme", selectedTheme);
+
+  if (selectedTheme === "progress") {
+    return <TimeLineForEntry entry={entry} />;
+  } else {
+    return <TimeLineDebug entry={entry} />;
+  }
 }
