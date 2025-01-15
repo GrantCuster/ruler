@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { dateNowAtom, showFormAtom, showToolbarAtom } from "../atoms";
+import { focusModeAtom, showFormAtom, showToolbarAtom } from "../atoms";
 import { useAtom } from "jotai";
 import { HandleTick } from "./HandleTick";
 import { Timeline } from "./Timeline";
@@ -7,7 +7,6 @@ import { AddForm } from "./AddForm";
 
 export function App() {
   const [showForm, setShowForm] = useAtom(showFormAtom);
-  const [dateNow] = useAtom(dateNowAtom);
 
   useEffect(() => {
     function handleKeyPress(e: KeyboardEvent) {
@@ -28,11 +27,11 @@ export function App() {
         className="w-full h
       -[100dvh] flex flex-col"
       >
+        <Toolbar />
         <div className="grow relative">
           <Timeline />
         </div>
       </div>
-      <Toolbar />
       {showForm ? <AddForm /> : null}
     </>
   );
@@ -40,17 +39,39 @@ export function App() {
 
 function Toolbar() {
   const [showToolbar, setShowToolbar] = useAtom(showToolbarAtom);
+  const [focusMode, setFocusMode] = useAtom(focusModeAtom);
   return (
     <>
       {showToolbar ? (
-        <div className="fixed left-0 top-0 w-full bg-neutral-800 flex items-center">
-            <div className="w-16 h-16"></div>
-          <div>hello i am toolbar</div>
+        <div className="w-full bg-neutral-800 bg-opacity-90 flex items-center justify-between">
+          <div className="w-16 h-16"></div>
+          <button
+            className="flex gap-3 text-sm items-center text-neutral-400 pr-4"
+            onClick={() => {
+              setFocusMode(!focusMode);
+            }}
+          >
+            <div className={!focusMode ? "text-neutral-100" : ""}>Schedule</div>
+            <div className="w-8 h-4 bg-black rounded-full relative">
+              <div
+                className="w-4 h-4 bg-neutral-200 rounded-full"
+                style={{
+                  position: "absolute",
+                  left: focusMode ? "50%" : 0,
+                  transition: "left 0.1s",
+                }}
+              ></div>
+            </div>
+            <div className={focusMode ? "text-neutral-100" : ""}>Focus</div>
+          </button>
         </div>
       ) : null}
-      <div className="fixed left-2 top-2 z-50 p-3 flex rounded-full bg-neutral-800 bg-opacity-80 hover:bg-opacity-100">
+      <button
+        className="fixed left-2 top-2 z-50 p-3 flex rounded-full bg-neutral-800 bg-opacity-80 hover:bg-opacity-100 hover:bg-neutral-900"
+        onClick={() => setShowToolbar(!showToolbar)}
+      >
         ⏳
-      </div>
+      </button>
     </>
   );
 }

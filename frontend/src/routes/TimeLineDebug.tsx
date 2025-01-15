@@ -1,16 +1,37 @@
 import { useAtom } from "jotai";
-import { currentSecondsAtom, dateNowAtom } from "../atoms";
+import { currentSecondsAtom } from "../atoms";
 import { EntryType } from "../types";
-import { dateToReadableTime, secondsToReadableTime } from "../shared/utils";
+import { secondsToReadableTime } from "../shared/utils";
 
-export function TimeLineDebug({ entry }: { entry: EntryType }) {
+export function TimeLineDebug({ entry }: { entry: EntryType | null }) {
   const [currentSeconds] = useAtom(currentSecondsAtom);
-  const [dateNow] = useAtom(dateNowAtom);
+
+  return (
+    <div className="absolute inset-0 flex justify-center items-center">
+      {entry ? <WithEntry entry={entry} /> : <WithoutEntry />}
+    </div>
+  );
+}
+
+function WithoutEntry() {
+  const [currentSeconds] = useAtom(currentSecondsAtom);
+
+  return <div>{secondsToReadableTime(currentSeconds)}</div>;
+}
+
+function WithEntry({ entry }: { entry: EntryType }) {
+  const [currentSeconds] = useAtom(currentSecondsAtom);
 
   const percent =
-    Math.round(((currentSeconds - entry.startTime) / entry.duration) * 1000) /
-      10 +
+    Math.round(((currentSeconds - entry.startTime) / entry.duration) * 10000) /
+    100 +
     "%";
 
-  return <div className="absolute inset-0 ">{currentSeconds}</div>;
+  return (
+    <div className="flex flex-col items-center font-mono">
+      <div>{secondsToReadableTime(currentSeconds)}</div>
+      <div>{percent}</div>
+      <div>{secondsToReadableTime(entry.startTime)} - {secondsToReadableTime(entry.startTime + entry.duration)}</div>
+    </div>
+  );
 }

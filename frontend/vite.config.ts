@@ -9,9 +9,10 @@ export default defineConfig({
     react({ babel: { plugins: [jotaiDebugLabel, jotaiReactRefresh] } }),
   ],
   server: {
+    port: 4000,
     proxy: {
       "/api": {
-        target: "http://localhost:5000",
+        target: "http://localhost:4001",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

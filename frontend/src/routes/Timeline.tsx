@@ -1,13 +1,18 @@
-import { useAtom } from "jotai";
-import { currentSecondsAtom, entriesAtom } from "../atoms";
+
+import { currentSecondsAtom, entriesAtom, focusModeAtom, showFormAtom } from "../atoms";
 import { TimelineForDay } from "./TimelineForDay";
-import { TimeLineForEntry } from "./TimeLineForEntry";
 import { EntryType } from "../types";
-import { TimeLineDebug } from "./TimeLineDebug";
+import { TimeLineForEntry } from "./TimeLineForEntry";
+import { useAtom } from "jotai";
 
 export function Timeline() {
   const [currentSeconds] = useAtom(currentSecondsAtom);
   const [entries] = useAtom(entriesAtom);
+  const [focusMode] = useAtom(focusModeAtom);
+  const [addForm] = useAtom(showFormAtom);
+
+  // TODO: sort by start time so you can do next?
+  // would need to figbure out overlap issues
 
   let activeEntry = null;
   for (let i = 0; i < entries.length; i++) {
@@ -16,18 +21,18 @@ export function Timeline() {
       entry.startTime <= currentSeconds &&
       entry.startTime + entry.duration >= currentSeconds
     ) {
-      activeEntry = i;
+      activeEntry = entries[i];
     }
   }
 
-  return activeEntry !== null ? (
-    <TimelineContainer entry={entries[activeEntry]} />
+  return (focusMode && !addForm) ? (
+    <TimelineContainer entry={activeEntry} />
   ) : (
     <TimelineForDay />
   );
 }
 
-export function TimelineContainer({ entry }: { entry: EntryType }) {
-  // return <TimeLineForEntry entry={entry} />;
-  return <TimeLineDebug entry={entry} />;
+export function TimelineContainer({ entry }: { entry: EntryType | null }) {
+  return <TimeLineForEntry entry={entry} />;
+  // return <TimeLineDebug entry={entry} />;
 }
