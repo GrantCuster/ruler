@@ -51,8 +51,9 @@ export function AddForm() {
   }, []);
 
   return (
-    <div className="absolute inset-0 bg-neutral-500 bg-opacity-10 flex items-center justify-center">
-      <div className="bg-neutral-800 w-full max-w-[640px] flex flex-col">
+    <div className="w-[260px] h-full z-50">
+      <div className="bg-neutral-800 h-full flex flex-col">
+        <div className="px-3 py-2">Add Block</div>
         <div className="px-3 py-2">
           <select
             className="w-full px-3 py-2"
@@ -92,7 +93,11 @@ export function AddForm() {
             }}
           />
         </div>
-        <div className="px-3 py-2 flex justify-end">
+        <div className="px-3 py-2 gap-3 flex justify-end">
+          <button className="px-2 py-1 bg-neutral-900" onClick={handleSubmit}>
+            Cancel
+          </button>
+
           <button className="px-2 py-1 bg-neutral-900" onClick={handleSubmit}>
             Add
           </button>

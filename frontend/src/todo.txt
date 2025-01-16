@@ -1,6 +1,8 @@
-x current hour, with current time marked in middle
-- figure out how to zoom out or something
 
-in space, there is x,y and zoom level (or z)
 
-in time, there is just x and zoom level (or z) - but remember that is the camera
+- [ ] Change add form so it contains day timeline - that's the only place that lives
+- [ ] Visualize event you're adding in the timeline
+- [ ] More readable options for adding a block
+
+SCRATCH
+that should also be edit block interface? - so selected - maybe that means it's a more general view with the calendar emoji

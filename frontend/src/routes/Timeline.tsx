@@ -1,6 +1,6 @@
 
 import { currentSecondsAtom, entriesAtom, focusModeAtom, selectedThemeAtom, showFormAtom } from "../atoms";
-import { TimelineForDay } from "./TimelineForDay";
+import { TimelineForDay } from "./Calendar";
 import { EntryType } from "../types";
 import { TimeLineForEntry } from "./Progress";
 import { TimeLineDebug } from "./Debug";

@@ -5,6 +5,8 @@ export const currentSecondsAtom = atom<number>(0);
 export const dateNowAtom = atom<Date>(new Date());
 export const timezoneOffsetAtom = atom(new Date().getTimezoneOffset() * 60);
 
+export const showCalendarAtom = atom(false);
+
 export const showToolbarAtom = atom(true);
 export const showPaletteAtom = atom(false);
 
