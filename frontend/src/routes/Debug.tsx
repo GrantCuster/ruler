@@ -16,7 +16,7 @@ export function TimeLineDebug({ entry }: { entry: EntryType | null }) {
 function WithoutEntry() {
   const [currentSeconds] = useAtom(currentSecondsAtom);
 
-  return <div>{secondsToReadableTime(currentSeconds)}</div>;
+  return <div>{secondsToReadableTime(currentSeconds)} debug</div>;
 }
 
 function WithEntry({ entry }: { entry: EntryType }) {

@@ -10,7 +10,7 @@ export function TimeLineForEntry({ entry }: { entry: EntryType | null }) {
   if (!entry) {
     return (
       <div className="absolute inset-0 flex justify-center items-center">
-        <div>no entry</div>
+        <div>{secondsToReadableTime(currentSeconds)}</div>
       </div>
     );
   }
