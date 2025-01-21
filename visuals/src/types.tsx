@@ -5,7 +5,4 @@ export type EntryType = {
   id: string;
 }
 
-export type ThemeType = {
-  name: string;
-  url: string;
-}
+export type ThemeType = "progress" | "debug"

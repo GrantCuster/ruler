@@ -4,17 +4,21 @@
   "private": true,
   "workspaces": [
     "backend",
-    "frontend"
+    "frontend",
+    "visuals"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:visuals\"",
     "dev:backend": "npm --prefix backend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
-    "start": "concurrently \"npm run dev:backend\" \"npm run start:frontend\"",
+    "dev:visuals": "npm --prefix visuals run dev",
+    "start": "concurrently \"npm run dev:backend\" \"npm run start:frontend\" \"npm run start:visuals\"",
     "start:frontend": "npm --prefix frontend start",
-    "build": "npm run build:backend && npm run build:frontend",
+    "start:visuals": "npm --prefix visuals run start",
+    "build": "npm run build:backend && npm run build:frontend && npm run build:visuals",
     "build:backend": "npm --prefix backend run build",
-    "build:frontend": "npm --prefix frontend run build"
+    "build:frontend": "npm --prefix frontend run build",
+    "build:visuals": "npm --prefix visuals run build"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

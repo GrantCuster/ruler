@@ -1,27 +1,52 @@
 import {
   currentSecondsAtom,
   entriesAtom,
-  iframeLoadedAtom,
   selectedThemeAtom,
   showCalendarAtom,
   showPaletteAtom,
-  themesAtom,
 } from "../atoms";
 import { useAtom } from "jotai";
-import { HandleTick } from "./HandleTick";
-import { Calendar } from "./Calendar";
-import { useEffect, useRef, useState } from "react";
+import { TimeLineForEntry } from "./Progress";
+import { TimeLineDebug } from "./Debug";
+import { themes } from "../shared/consts";
+import { EntryType } from "../types";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 
 export function App() {
-  const [showCalendar] = useAtom(showCalendarAtom);
+  const [entry, setEntry] = useState<EntryType | null>(null);
+  const [currentSeconds, setCurrentSeconds] = useState(0);
+  const params = useParams();
 
-  return (
-    <>
-      <HandleTick />
-      {showCalendar ? <Calendar /> : <Focus />}
-      <Toolbar />
-    </>
-  );
+  useEffect(() => {
+    window.addEventListener("message", (event) => {
+      // Validate the origin
+      if (event.origin !== "http://localhost:4000") {
+        console.warn("Origin not allowed:", event.origin);
+        return;
+      }
+
+      console.log("Message received:", event.data);
+
+      // Access nested properties
+      if (event.data.type === "DATA") {
+        setEntry(event.data.payload.activeEntry);
+        setCurrentSeconds(event.data.payload.currentSeconds);
+      }
+    });
+  }, []);
+
+  if (currentSeconds !== 0) {
+    if (params.visual === "debug") {
+      return <TimeLineDebug entry={entry} currentSeconds={currentSeconds} />;
+    } else if (params.visual === "progress") {
+      return <TimeLineForEntry entry={entry} currentSeconds={currentSeconds} />;
+    } else {
+      return <div>Not found</div>;
+    }
+  } else {
+    return null;
+  }
 }
 
 function Focus() {
@@ -38,27 +63,17 @@ function Focus() {
 
 function ThemeSwitcher() {
   const [selectedTheme, setSelectedTheme] = useAtom(selectedThemeAtom);
-  const [themes] = useAtom(themesAtom);
-  const [, setIframeLoaded] = useAtom(iframeLoadedAtom);
-
-  console.log(themes);
 
   return (
-    <div className="w-[260px] h-full border-r border-neutral-600">
-      <div className="py-2 px-2 text-sm uppercase">Themes</div>
-      {themes.map((theme) => {
+    <div className="w-[260px] h-full">
+      <div className="px-3 py-1">Themes</div>
+      {themes.map((themeName) => {
         return (
           <button
-            key={theme.name}
-            className={`block w-full py-1 text-left px-3 ${selectedTheme.name === theme.name ? "bg-neutral-700" : ""}`}
-            onClick={() => {
-              if (theme.name !== selectedTheme.name) {
-                setIframeLoaded(false);
-                setSelectedTheme(theme);
-              }
-            }}
+            className={`block w-full py-1 text-left px-3 ${selectedTheme === themeName ? "bg-neutral-700" : ""}`}
+            onClick={() => setSelectedTheme(themeName)}
           >
-            {theme.name}
+            {themeName}
           </button>
         );
       })}
@@ -70,8 +85,6 @@ function ChosenFocus() {
   const [selectedTheme] = useAtom(selectedThemeAtom);
   const [currentSeconds] = useAtom(currentSecondsAtom);
   const [entries] = useAtom(entriesAtom);
-  const [iframeLoaded, setIframeLoaded] = useAtom(iframeLoadedAtom);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // TODO: sort by start time so you can do next?
   // would need to figbure out overlap issues
@@ -87,39 +100,11 @@ function ChosenFocus() {
     }
   }
 
-  useEffect(() => {
-    setIframeLoaded(false);
-  }, []);
-
-  useEffect(() => {
-    if (iframeRef.current) {
-      iframeRef.current.contentWindow?.postMessage(
-        {
-          type: "DATA",
-          payload: {
-            currentSeconds,
-            activeEntry,
-          },
-        },
-        "*",
-      );
-    }
-  }, [iframeRef, currentSeconds]);
-
-  return (
-    <iframe
-      className="w-full h-full bg-black hidden"
-      ref={iframeRef}
-      src={selectedTheme.url}
-      style={{
-        border: "none",
-        display: iframeLoaded ? "block" : "none",
-      }}
-      onLoad={() => {
-        setIframeLoaded(true);
-      }}
-    ></iframe>
-  );
+  if (selectedTheme === "progress") {
+    return <TimeLineForEntry entry={activeEntry} />;
+  } else {
+    return <TimeLineDebug entry={activeEntry} />;
+  }
 }
 
 function Toolbar() {

@@ -3,8 +3,7 @@ import { currentSecondsAtom, dateNowAtom } from "../atoms";
 import { EntryType } from "../types";
 import { dateToReadableTime, secondsToReadableTime } from "../shared/utils";
 
-export function TimeLineForEntry({ entry }: { entry: EntryType | null }) {
-  const [currentSeconds] = useAtom(currentSecondsAtom);
+export function TimeLineForEntry({ entry, currentSeconds }: { entry: EntryType | null, currentSeconds: number }) {
   const [dateNow] = useAtom(dateNowAtom);
 
   if (!entry) {

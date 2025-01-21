@@ -1,4 +1,3 @@
-
 Architecture
 
 - [ ] make a new repo for all themes - localhost:4010?
@@ -9,8 +8,8 @@ Architecture
 Add block / Calendar view
 
 - [x] Change add form so it contains day timeline - that's the only place that lives
-- [ ] Visualize event you're adding in the timeline
-- [ ] More readable options for adding a block
+- [x] More readable options for adding a block
+- [x] Visualize event you're adding in the timeline
 
 SCRATCH
 that should also be edit block interface? - so selected - maybe that means it's a more general view with the calendar emoji
