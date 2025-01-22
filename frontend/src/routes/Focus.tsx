@@ -3,8 +3,6 @@ import {
   entriesAtom,
   iframeLoadedAtom,
   selectedThemeAtom,
-  showCalendarAtom,
-  showPaletteAtom,
   themesAtom,
 } from "../atoms";
 import { useAtom } from "jotai";
@@ -28,7 +26,7 @@ export function Focus() {
         <div className="flex bg-neutral-800 rounded-full border border-neutral-700">
           <Link
             className="w-12 h-12 items-center justify-center flex rounded-full bg-neutral-800 bg-opacity-80 hover:bg-opacity-100 hover:bg-neutral-900"
-            to="/switcher"
+            to={showSwitcher ? "/" : "switcher"}
           >
             🎨
           </Link>

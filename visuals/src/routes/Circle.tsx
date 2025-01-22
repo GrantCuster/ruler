@@ -1,7 +1,7 @@
 import { EntryType } from "../types";
 import { dateToReadableTime, secondsToReadableTime } from "../shared/utils";
 
-export function Progress({ entry, currentSeconds }: { entry: EntryType | null, currentSeconds: number }) {
+export function Circle({ entry, currentSeconds }: { entry: EntryType | null, currentSeconds: number }) {
   const dateNow = new Date()
 
   if (!entry) {

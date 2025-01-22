@@ -32,12 +32,13 @@ function WithEntry({
 }) {
   const percent =
     Math.round(((currentSeconds - entry.startTime) / entry.duration) * 10000) /
-      100 +
+    100 +
     "%";
 
   return (
     <div className="flex flex-col items-center font-mono">
       <div>{secondsToReadableTime(currentSeconds)}</div>
+      <div>{entry.label}</div>
       <div>{percent}</div>
       <div>
         {secondsToReadableTime(entry.startTime)} -{" "}

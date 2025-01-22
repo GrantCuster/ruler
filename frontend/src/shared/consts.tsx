@@ -13,4 +13,9 @@ export const standardThemes: ThemeType[] = [
     name: "Debug",
     url: "http://localhost:4002/debug",
   },
+  {
+    name: "Circle",
+    url: "http://localhost:4002/circle",
+  },
+
 ];

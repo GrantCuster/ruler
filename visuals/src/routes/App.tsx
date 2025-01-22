@@ -3,6 +3,7 @@ import { Progress } from "./Progress";
 import { Debug } from "./Debug";
 import { useEffect, useState } from "react";
 import { EntryType } from "../types";
+import { Circle } from "./Circle";
 
 export function App() {
   const params = useParams();
@@ -17,8 +18,6 @@ export function App() {
         return;
       }
 
-      console.log("Message received:", event.data);
-
       // Access nested properties
       if (event.data.type === "DATA") {
         setEntry(event.data.payload.activeEntry);
@@ -27,9 +26,17 @@ export function App() {
     });
   }, []);
 
-  if (params.visual === "progress") {
-    return <Progress entry={null} currentSeconds={0} />;
+  if (currentSeconds === 0) {
+    return (
+      <div className="absolute inset-0 flex justify-center items-center">
+        <div className="text-neutral-400">Loading...</div>
+      </div>
+    );
+  } else if (params.visual === "progress") {
+    return <Progress entry={entry} currentSeconds={currentSeconds} />;
   } else if (params.visual === "debug") {
-    return <Debug entry={null} currentSeconds={0} />;
+    return <Debug entry={entry} currentSeconds={currentSeconds} />;
+  } else if (params.visual === "circle") {
+    return <Circle entry={entry} currentSeconds={currentSeconds} />;
   }
 }

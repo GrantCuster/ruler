@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { entriesAtom, currentSecondsAtom, showFormAtom } from "../atoms";
+import { entriesAtom, currentSecondsAtom } from "../atoms";
 import {
   secondsInDay,
   secondsInHour,
@@ -19,7 +19,6 @@ export function Calendar() {
   const [entries, setEntries] = useAtom(entriesAtom);
   const [duration, setDuration] = useState(0.5);
   const [label, setLabel] = useState("");
-  const [, setShowForm] = useAtom(showFormAtom);
   const [currentSeconds] = useAtom(currentSecondsAtom);
 
   const nearestFifteen =
@@ -53,18 +52,6 @@ export function Calendar() {
     setDuration(0.5);
     setLabel("");
   }
-
-  useEffect(() => {
-    function keydownHandler(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        setShowForm(false);
-      }
-    }
-    window.addEventListener("keydown", keydownHandler);
-    return () => {
-      window.removeEventListener("keydown", keydownHandler);
-    };
-  }, []);
 
   return (
     <div className="flex grow relative">
@@ -234,7 +221,8 @@ export function Entry({
       }}
     >
       <div className="text-xs text-blue-300">
-        {secondsToReadableTime(entry.startTime)} - {secondsToReadableDuration(entry.duration)}
+        {secondsToReadableTime(entry.startTime)} -{" "}
+        {secondsToReadableDuration(entry.duration)}
       </div>
       {entry.label}
     </div>
