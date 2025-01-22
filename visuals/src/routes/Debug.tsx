@@ -1,7 +1,7 @@
 import { EntryType } from "../types";
 import { secondsToReadableTime } from "../shared/utils";
 
-export function TimeLineDebug({
+export function Debug({
   entry,
   currentSeconds,
 }: {

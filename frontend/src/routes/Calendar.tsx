@@ -5,7 +5,6 @@ import {
   secondsInHour,
   secondsInQuarterHour,
 } from "../shared/consts";
-import { Entry } from "./Entry";
 import { v4 as uuid } from "uuid";
 import {
   secondsToReadableDuration,
@@ -14,6 +13,7 @@ import {
 } from "../shared/utils";
 import { useEffect, useState } from "react";
 import { EntryType } from "../types";
+import { Link } from "react-router";
 
 export function Calendar() {
   const [entries, setEntries] = useAtom(entriesAtom);
@@ -200,6 +200,43 @@ export function Calendar() {
           </div>
         </div>
       </div>
+      <div className="fixed right-6 bottom-6 flex z-50">
+        <div className="flex bg-neutral-800 rounded-full border border-neutral-700">
+          <Link
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-neutral-800 bg-opacity-80 hover:bg-opacity-100 hover:bg-neutral-900"
+            to="/"
+          >
+            ⏳
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Entry({
+  entry,
+  hourWindow,
+  flooredSeconds,
+}: {
+  entry: EntryType;
+  hourWindow: number;
+  flooredSeconds: number;
+}) {
+  const secondsWindow = hourWindow * secondsInHour;
+
+  return (
+    <div
+      className="absolute w-full bg-blue-600 bg-opacity-90 text-white border-2 border-blue-600 px-3 py-2"
+      style={{
+        top: ((entry.startTime - flooredSeconds) / secondsWindow) * 100 + "%",
+        height: (entry.duration / secondsWindow) * 100 + "%",
+      }}
+    >
+      <div className="text-xs text-blue-300">
+        {secondsToReadableTime(entry.startTime)} - {secondsToReadableDuration(entry.duration)}
+      </div>
+      {entry.label}
     </div>
   );
 }

@@ -1,10 +1,8 @@
-import { useAtom } from "jotai";
-import { currentSecondsAtom, dateNowAtom } from "../atoms";
 import { EntryType } from "../types";
 import { dateToReadableTime, secondsToReadableTime } from "../shared/utils";
 
-export function TimeLineForEntry({ entry, currentSeconds }: { entry: EntryType | null, currentSeconds: number }) {
-  const [dateNow] = useAtom(dateNowAtom);
+export function Progress({ entry, currentSeconds }: { entry: EntryType | null, currentSeconds: number }) {
+  const dateNow = new Date()
 
   if (!entry) {
     return (
@@ -22,7 +20,7 @@ export function TimeLineForEntry({ entry, currentSeconds }: { entry: EntryType |
     <div className="absolute inset-0 flex flex-col justify-between">
       <div className="text-center px-3 py-2 font-mono">{percent}</div>
       <div
-        className="absolute left-0 top-0 h-full bg-orange-700"
+        className="absolute left-0 top-0 h-full bg-red-600"
         style={{
           width:
             ((currentSeconds - entry.startTime) / entry.duration) * 100 + "%",

@@ -8,7 +8,6 @@ export const timezoneOffsetAtom = atom(new Date().getTimezoneOffset() * 60);
 
 export const showCalendarAtom = atom(false);
 
-export const showToolbarAtom = atom(true);
 export const showPaletteAtom = atom(false);
 
 export const focusModeAtom = atom(true);
@@ -20,3 +19,5 @@ export const themesAtom = atom<ThemeType[]>(standardThemes);
 export const selectedThemeAtom = atom<ThemeType>(standardThemes[0]);
 
 export const iframeLoadedAtom = atom(false);
+
+export const showToolbarAtom = atom(true);
