@@ -54,7 +54,7 @@ export function Calendar() {
   }
 
   return (
-    <div className="flex grow relative">
+    <div className="flex grow relative flex-col md:flex-row">
       <div className="flex grow relative">
         {[...Array(hourWindow)].map((_, i) => (
           <div
@@ -108,8 +108,8 @@ export function Calendar() {
           style={{ top: percent * 100 + "%" }}
         ></div>
       </div>
-      <div className="w-[260px] h-full z-50 font-mono">
-        <div className="bg-neutral-800 h-full flex flex-col gap-3 px-3">
+      <div className="w-full md:w-[300px] md:h-full z-50 font-mono">
+        <div className="bg-neutral-800 h-full flex flex-col gap-3 px-3 pb-3">
           <div className="pt-4 px-2 text-sm uppercase">Add Timer Block</div>
           <div className="">
             <div className="text-xs mb-2 px-2 text-neutral-400 uppercase">
@@ -157,10 +157,11 @@ export function Calendar() {
             <div className="text-xs mb-2 px-2 text-neutral-400 uppercase">
               Label
             </div>
-            <input
-              type="text"
+            <textarea
               className="w-full px-3 py-2"
               placeholder="Task name"
+              rows={2}
+              autoFocus
               value={label}
               onChange={(e) => setLabel(e.target.value)}
               onKeyDown={(e) => {
@@ -169,7 +170,7 @@ export function Calendar() {
                   handleSubmit();
                 }
               }}
-            />
+            ></textarea>
           </div>
           <div className="gap-3 flex justify-end">
             <button

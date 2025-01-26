@@ -4,6 +4,7 @@ import { Debug } from "./Debug";
 import { useEffect, useState } from "react";
 import { EntryType } from "../types";
 import { Circle } from "./Circle";
+import { Arc } from "./Arc";
 
 export function App() {
   const params = useParams();
@@ -38,5 +39,7 @@ export function App() {
     return <Debug entry={entry} currentSeconds={currentSeconds} />;
   } else if (params.visual === "circle") {
     return <Circle entry={entry} currentSeconds={currentSeconds} />;
+  } else if (params.visual === "arc") {
+    return <Arc entry={entry} currentSeconds={currentSeconds} />;
   }
 }

@@ -17,5 +17,8 @@ export const standardThemes: ThemeType[] = [
     name: "Circle",
     url: "http://localhost:4002/circle",
   },
-
+  {
+    name: "Arc",
+    url: "http://localhost:4002/arc",
+  },
 ];

@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <div className="h-[100dvh] w-full flex overflow-hidden">
+    <div className="h-[100dvh] relative w-full flex-col flex overflow-hidden">
       <BrowserRouter>
         <Routes>
           <Route path="/:visual" element={<App />} />

@@ -1,8 +1,12 @@
 import { EntryType } from "../types";
-import { dateToReadableTime, secondsToReadableDuration, secondsToReadableTime } from "../shared/utils";
+import {
+  dateToReadableTime,
+  secondsToReadableDuration,
+  secondsToReadableTime,
+} from "../shared/utils";
 import { useEffect, useRef } from "react";
 
-export function Circle({
+export function Arc({
   entry,
   currentSeconds,
 }: {
@@ -20,7 +24,9 @@ export function Circle({
   }
 
   const fraction = (currentSeconds - entry.startTime) / entry.duration;
-  const remainingTime = secondsToReadableDuration(entry.duration - (currentSeconds - entry.startTime))
+  const remainingTime = secondsToReadableDuration(
+    entry.duration - (currentSeconds - entry.startTime),
+  );
   const percent =
     Math.round(((currentSeconds - entry.startTime) / entry.duration) * 100) +
     "%";
@@ -31,23 +37,30 @@ export function Circle({
     canvas.height = 400;
     const ctx = canvas?.getContext("2d")!;
     ctx.clearRect(0, 0, 400, 400);
-    ctx.fillStyle = "#222";
-    ctx.arc(200, 200, 200, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.fillStyle = "yellow";
+
+    ctx.strokeStyle = "#222";
+    ctx.lineWidth = 6;
     ctx.beginPath();
-    ctx.arc(200, 200, 200, Math.PI, fraction * 2 * Math.PI + Math.PI);
-    ctx.lineTo(200, 200);
-    ctx.closePath();
-    ctx.fill();
+    ctx.arc(200, 200, 180, 0, 2 * Math.PI);
+    ctx.stroke();
+
+    ctx.strokeStyle = "purple";
+    ctx.lineWidth = 8;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.arc(200, 200, 180, Math.PI, fraction * 2 * Math.PI + Math.PI);
+    ctx.stroke();
   }
 
   return (
     <div className="absolute left-0 top-0 h-full flex flex-col gap-4 w-full justify-center items-center">
-      <canvas width={400} height={400} ref={canvasRef}
+      <canvas
+        width={400}
+        height={400}
+        ref={canvasRef}
         style={{
           width: 400,
-          height: 400
+          height: 400,
         }}
       />
       <div>{percent}</div>
