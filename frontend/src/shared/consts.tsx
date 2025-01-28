@@ -6,12 +6,12 @@ export const secondsInDay = secondsInHour * 24;
 
 export const standardThemes: ThemeType[] = [
   {
-    name: "Progress",
-    url: "http://localhost:4002/progress",
+    name: "API",
+    url: "http://localhost:4002/example-api",
   },
   {
-    name: "Debug",
-    url: "http://localhost:4002/debug",
+    name: "Progress",
+    url: "http://localhost:4002/progress",
   },
   {
     name: "Circle",

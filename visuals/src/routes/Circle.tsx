@@ -1,29 +1,11 @@
-import { EntryType } from "../types";
-import { dateToReadableTime, secondsToReadableDuration, secondsToReadableTime } from "../shared/utils";
-import { useEffect, useRef } from "react";
+import { DataType } from "../types";
+import { useRef } from "react";
 
-export function Circle({
-  entry,
-  currentSeconds,
-}: {
-  entry: EntryType | null;
-  currentSeconds: number;
-}) {
+export function Circle({ data }: { data: DataType }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  if (!entry) {
-    return (
-      <div className="absolute inset-0 flex justify-center items-center">
-        <div>{secondsToReadableTime(currentSeconds)}</div>
-      </div>
-    );
-  }
-
-  const fraction = (currentSeconds - entry.startTime) / entry.duration;
-  const remainingTime = secondsToReadableDuration(entry.duration - (currentSeconds - entry.startTime))
-  const percent =
-    Math.round(((currentSeconds - entry.startTime) / entry.duration) * 100) +
-    "%";
+  const fraction = data.currentSeconds / data.duration;
+  const percent = Math.round((data.currentSeconds / data.duration) * 100) + "%";
 
   if (canvasRef.current) {
     const canvas = canvasRef.current!;
@@ -44,14 +26,17 @@ export function Circle({
 
   return (
     <div className="absolute left-0 top-0 h-full flex flex-col gap-4 w-full justify-center items-center">
-      <canvas width={400} height={400} ref={canvasRef}
+      <canvas
+        width={400}
+        height={400}
+        ref={canvasRef}
         style={{
           width: 400,
-          height: 400
+          height: 400,
         }}
       />
       <div>{percent}</div>
-      <div>{entry.label}</div>
+      <div>{data.label}</div>
     </div>
   );
 }

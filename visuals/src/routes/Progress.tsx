@@ -1,20 +1,10 @@
-import { EntryType } from "../types";
+import { DataType, EntryType } from "../types";
 import { dateToReadableTime, secondsToReadableTime } from "../shared/utils";
 
-export function Progress({ entry, currentSeconds }: { entry: EntryType | null, currentSeconds: number }) {
-  const dateNow = new Date()
+export function Progress({ data }: { data: DataType }) {
+  const dateNow = new Date();
 
-  if (!entry) {
-    return (
-      <div className="absolute inset-0 flex justify-center items-center">
-        <div>{secondsToReadableTime(currentSeconds)}</div>
-      </div>
-    );
-  }
-
-  const percent =
-    Math.round(((currentSeconds - entry.startTime) / entry.duration) * 100) +
-    "%";
+  const percent = Math.round((data.currentSeconds / data.duration) * 100) + "%";
 
   return (
     <div className="absolute inset-0 flex flex-col justify-between">
@@ -22,20 +12,19 @@ export function Progress({ entry, currentSeconds }: { entry: EntryType | null, c
       <div
         className="absolute left-0 top-0 h-full bg-neutral-700"
         style={{
-          width:
-            ((currentSeconds - entry.startTime) / entry.duration) * 100 + "%",
+          width: (data.currentSeconds / data.duration) * 100 + "%",
         }}
       ></div>
       <div className="relative text-2xl px-3 py-2 text-center grow flex items-center justify-center">
         <div>
-          <div>{entry.label}</div>
+          <div>{data.label}</div>
           <div className="hidden">{percent}</div>
         </div>
       </div>
       <div className="flex relative justify-between items-baseline w-full px-3 py-2">
         <div className="text-center relative uppercase">
           <div>
-            {secondsToReadableTime(entry.startTime)
+            {secondsToReadableTime(0)
               .split(" ")
               .map((text, i) => {
                 return (
@@ -51,7 +40,7 @@ export function Progress({ entry, currentSeconds }: { entry: EntryType | null, c
           <div className="flex items-baseline">
             <div className="">{dateToReadableTime(dateNow).split(" ")[0]}</div>
             <div className="text-base">
-              :{(currentSeconds % 60).toString().padStart(2, "0")}
+              :{(data.currentSeconds % 60).toString().padStart(2, "0")}
             </div>
             <div className="ml-2 text-base uppercase">
               {dateToReadableTime(dateNow).split(" ")[1]}
@@ -59,7 +48,7 @@ export function Progress({ entry, currentSeconds }: { entry: EntryType | null, c
           </div>
         </div>
         <div className="text-center relative uppercase">
-          {secondsToReadableTime(entry.startTime + entry.duration)
+          {secondsToReadableTime(data.duration)
             .split(" ")
             .map((text, i) => {
               return (

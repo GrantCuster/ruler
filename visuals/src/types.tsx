@@ -1,8 +1,7 @@
-export type EntryType = {
+export type DataType = {
+  currentSeconds: number;
   startTime: number;
   duration: number;
   label: string;
-  id: string;
 }
 
-export type ThemeType = "progress" | "debug"
