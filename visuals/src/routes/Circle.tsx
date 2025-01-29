@@ -4,8 +4,10 @@ import { useRef } from "react";
 export function Circle({ data }: { data: DataType }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const fraction = data.currentSeconds / data.duration;
-  const percent = Math.round((data.currentSeconds / data.duration) * 100) + "%";
+  const fraction = (data.currentSeconds - data.startTime) / data.duration;
+  const percent =
+    Math.round(((data.currentSeconds - data.startTime) / data.duration) * 100) +
+    "%";
 
   if (canvasRef.current) {
     const canvas = canvasRef.current!;

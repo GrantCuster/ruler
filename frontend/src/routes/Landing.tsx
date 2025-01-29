@@ -1,42 +1,39 @@
 import { useAtom } from "jotai";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { currentSecondsAtom, themesAtom } from "../atoms";
 import { secondsInHour, secondsInQuarterHour } from "../shared/consts";
+import { HandleTick } from "./HandleTick";
 
 function Landing() {
-  const iframeRefs = useRef<Record<string, HTMLIFrameElement>>({});
+  const [iframes, setIframes] = useState<Record<string, HTMLIFrameElement>>({});
   const [currentSeconds, setCurrentSeconds] = useAtom(currentSecondsAtom);
   const [themes] = useAtom(themesAtom);
 
   useEffect(() => {
-    const iframeKeys = Object.keys(iframeRefs.current);
+    const iframeKeys = Object.keys(iframes);
     const nearestFifteen =
       Math.floor(currentSeconds / secondsInQuarterHour) * secondsInQuarterHour;
-    console.log(iframeKeys);
 
-    for (let iframe of iframeKeys) {
-      iframeRefs.current[iframe].contentWindow?.postMessage({
-        type: "DATA",
-        payload: {
-          currentSeconds,
-          duration: secondsInHour / 2,
-          label: "Example",
+    for (let key of iframeKeys) {
+      iframes[key].contentWindow?.postMessage(
+        {
+          type: "DATA",
+          payload: {
+            currentSeconds,
+            startTime: nearestFifteen,
+            duration: secondsInHour / 2,
+            label: "Example",
+          },
         },
-      });
+        "*",
+      );
     }
-  }, [iframeRefs, currentSeconds]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSeconds((prev) => prev + 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+  }, [iframes, currentSeconds]);
 
   return (
     <div className="h-full w-full flex flex-col">
+      <HandleTick />
       <div className="flex items-stretch justify-between">
         <div className="px-3 py-2">
           <div className="font-bold">Timer</div>
@@ -61,10 +58,13 @@ function Landing() {
           <div className="flex flex-col" key={theme.url}>
             <div className="grow relative">
               <iframe
-                ref={(el) => {
-                  if (el && !iframeRefs.current[theme.url]) {
-                    iframeRefs.current[theme.url] = el;
-                  }
+                onLoad={(e) => {
+                  setIframes((prev) => {
+                    return {
+                      ...prev,
+                      [theme.url]: e.target as HTMLIFrameElement,
+                    };
+                  });
                 }}
                 className="w-full h-full"
                 src={theme.url}

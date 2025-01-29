@@ -4,7 +4,8 @@ import { dateToReadableTime, secondsToReadableTime } from "../shared/utils";
 export function Progress({ data }: { data: DataType }) {
   const dateNow = new Date();
 
-  const percent = Math.round((data.currentSeconds / data.duration) * 100) + "%";
+  const fraction = (data.currentSeconds - data.startTime) / data.duration;
+  const percent = Math.round(((data.currentSeconds - data.startTime) / data.duration) * 100) + "%";
 
   return (
     <div className="absolute inset-0 flex flex-col justify-between">
@@ -12,7 +13,7 @@ export function Progress({ data }: { data: DataType }) {
       <div
         className="absolute left-0 top-0 h-full bg-neutral-700"
         style={{
-          width: (data.currentSeconds / data.duration) * 100 + "%",
+          width: fraction * 100 + "%",
         }}
       ></div>
       <div className="relative text-2xl px-3 py-2 text-center grow flex items-center justify-center">
@@ -24,7 +25,7 @@ export function Progress({ data }: { data: DataType }) {
       <div className="flex relative justify-between items-baseline w-full px-3 py-2">
         <div className="text-center relative uppercase">
           <div>
-            {secondsToReadableTime(0)
+            {secondsToReadableTime(data.startTime)
               .split(" ")
               .map((text, i) => {
                 return (
@@ -48,7 +49,7 @@ export function Progress({ data }: { data: DataType }) {
           </div>
         </div>
         <div className="text-center relative uppercase">
-          {secondsToReadableTime(data.duration)
+          {secondsToReadableTime(data.startTime + data.duration)
             .split(" ")
             .map((text, i) => {
               return (
