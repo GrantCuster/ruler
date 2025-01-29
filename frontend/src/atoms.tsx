@@ -10,7 +10,15 @@ export const focusModeAtom = atom(true);
 
 export const entriesAtom = atom<EntryType[]>([]);
 
-export const themesAtom = atom<ThemeType[]>(standardThemes);
+const standardThemeMap: Record<string, ThemeType> = {};
+for (const theme of standardThemes) {
+  standardThemeMap[theme.url] = theme;
+}
+export const themeMapAtom = atom<Record<string, ThemeType>>(standardThemeMap);
+export const themeIdsAtom = atom<string[]>(
+  standardThemes.map((theme) => theme.url),
+);
+
 export const selectedThemeAtom = atom<ThemeType>(standardThemes[0]);
 
 export const iframeLoadedAtom = atom(false);

@@ -31,3 +31,7 @@ select {
   background: theme("colors.neutral.900");
   color: theme("colors.neutral.100");
 }
+
+iframe {
+  background: black;
+}
