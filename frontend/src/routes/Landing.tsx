@@ -43,7 +43,6 @@ function Landing() {
   return (
     <div className="h-full w-full flex flex-col">
       <Header />
-      <Banner />
       <div
         className="grow grid gap-px bg-neutral-800 border border-neutral-800 w-full h-full"
         style={{
@@ -87,6 +86,8 @@ function Landing() {
           );
         })}
       </div>
+
+      <Banner />
       <GalleryFooter />
     </div>
   );
