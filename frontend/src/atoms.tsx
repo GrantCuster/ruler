@@ -22,3 +22,6 @@ export const themeIdsAtom = atom<string[]>(
 export const selectedThemeAtom = atom<ThemeType>(standardThemes[0]);
 
 export const iframeLoadedAtom = atom(false);
+
+export const galleryPerPageAtom = atom(4);
+export const galleryCursorAtom = atom(0);

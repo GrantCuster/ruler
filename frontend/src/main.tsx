@@ -4,7 +4,7 @@ import "./index.css";
 import Landing from "./routes/Landing.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { Calendar } from "./routes/Calendar.tsx";
-import { Focus } from "./routes/Focus.tsx";
+import { Focus, Fullscreen } from "./routes/Focus.tsx";
 import { HandleTick } from "./routes/HandleTick.tsx";
 
 createRoot(document.getElementById("root")!).render(
