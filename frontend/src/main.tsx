@@ -1,11 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import Landing from "./routes/Landing.tsx";
+import Gallery from "./routes/Gallery.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
-import { Calendar } from "./routes/Calendar.tsx";
-import { Focus, Fullscreen } from "./routes/Focus.tsx";
-import { HandleTick } from "./routes/HandleTick.tsx";
+import { HandleTick } from "./components/HandleTick.tsx";
+import Timer from "./routes/Timer.tsx";
+import Fullscreen from "./routes/Fullscreen.tsx";
+
+// Calendar could go back in
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -13,11 +15,10 @@ createRoot(document.getElementById("root")!).render(
       <HandleTick />
       <BrowserRouter>
         <Routes>
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/:option" element={<Focus />} />
           <Route path="/fullscreen/:encodedURL" element={<Fullscreen />} />
-          <Route path="/skin/:encodedURL" element={<Focus />} />
-          <Route path="/" element={<Landing />} />
+          <Route path="/skin/:encodedURL" element={<Timer />} />
+          <Route path="/skins" element={<Gallery />} />
+          <Route path="/" element={<Gallery />} />
         </Routes>
       </BrowserRouter>
     </div>

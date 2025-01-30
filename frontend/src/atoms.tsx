@@ -25,3 +25,5 @@ export const iframeLoadedAtom = atom(false);
 
 export const galleryPerPageAtom = atom(4);
 export const galleryCursorAtom = atom(0);
+
+export const addedTaskAtom = atom<EntryType | null>(null);
