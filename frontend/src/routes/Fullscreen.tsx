@@ -3,10 +3,11 @@ import { useParams } from "react-router";
 import { addedTaskAtom, currentSecondsAtom, themeMapAtom } from "../atoms";
 import { useEffect, useState } from "react";
 import { secondsInHour, secondsInQuarterHour } from "../shared/consts";
+import Banner from "../components/Banner";
 
 function Fullscreen() {
   const params = useParams();
-  const [currentSeconds, ] = useAtom(currentSecondsAtom);
+  const [currentSeconds] = useAtom(currentSecondsAtom);
   const [iframe, setIframe] = useState<HTMLIFrameElement | null>(null);
   const [addedTask] = useAtom(addedTaskAtom);
 
@@ -43,8 +44,9 @@ function Fullscreen() {
           src={url}
         />
       </div>
+      {addedTask ? null : <Banner />}
     </div>
   );
 }
 
-export default Fullscreen
+export default Fullscreen;

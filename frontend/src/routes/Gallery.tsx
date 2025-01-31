@@ -12,7 +12,7 @@ import {
 import { secondsInHour, secondsInQuarterHour } from "../shared/consts";
 import { ArrowRightIcon } from "lucide-react";
 import Header from "../components/Header";
-import { Banner } from "../components/Banner";
+import Banner from "../components/Banner";
 
 function Gallery() {
   const [iframes, setIframes] = useState<Record<string, HTMLIFrameElement>>({});
@@ -59,13 +59,17 @@ function Gallery() {
             <div className="flex flex-col" key={theme.url}>
               <Link
                 to={`/skin/${encodeURIComponent(theme.url)}`}
-                className="bg-neutral-900 text-neutral-400 flex hover:bg-neutral-800 hover:text-neutral-300 cursor-pointer"
+                className="bg-neutral-900 px-3 py-2 group flex hover:bg-neutral-800 cursor-pointer"
               >
-                <div className="px-3 py-2 text-sm flex gap-1">
-                  <div>{theme.name}</div>
-                  <div className="text-neutral-500 text-sm">@{theme.url}</div>
+                <div className="flex gap-2">
+                  <div className="text-neutral-200 group-hover:text-white">
+                    {theme.name}
+                  </div>
+                  <div className="text-neutral-400 group-hover:test-neutral-200">
+                    @{theme.url}
+                  </div>
                 </div>
-                <div className="px-3 py-2 text-neutral-400 justify-end flex gap-2 items-center text-sm grow text-right">
+                <div className="text-neutral-400 justify-end flex gap-2 items-center grow text-right">
                   <div>
                     <ArrowRightIcon size={13} />
                   </div>
@@ -101,7 +105,7 @@ export function GalleryFooter() {
   const [themeIds] = useAtom(themeIdsAtom);
 
   return (
-    <div className="flex items-center justify-between bg-black px-3 py-2 text-neutral-400 text-sm">
+    <div className="flex items-center px-3 py-2 justify-between bg-black text-neutral-400">
       <div>
         Page {galleryCursor / galleryPerPage + 1} of{" "}
         {Math.ceil(themeIds.length / galleryPerPage)}

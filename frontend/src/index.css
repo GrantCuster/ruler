@@ -22,12 +22,14 @@ body {
 html,
 body {
   background: theme("colors.black");
-  color: theme("colors.neutral.100");
+  color: theme("colors.white");
+  font-family: "DepartureMono", monospace;
+  font-size: 14px;
 }
 
 input,
 textarea,
 select {
   background: theme("colors.neutral.900");
-  color: theme("colors.neutral.100");
+  color: theme("colors.white");
 }

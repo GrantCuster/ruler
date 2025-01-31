@@ -1,9 +1,15 @@
-import { currentSecondsAtom, themeIdsAtom, themeMapAtom, addedTaskAtom } from "../atoms";
+import {
+  currentSecondsAtom,
+  themeIdsAtom,
+  themeMapAtom,
+  addedTaskAtom,
+} from "../atoms";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import { secondsInHour, secondsInQuarterHour } from "../shared/consts";
-import { ExpandIcon, ShuffleIcon } from "lucide-react";
+import { ExpandIcon, ShuffleIcon, ArrowLeftIcon, ListIcon, Grid2x2Icon } from "lucide-react";
+import Banner from "../components/Banner";
 
 function Timer() {
   const params = useParams();
@@ -40,35 +46,43 @@ function Timer() {
     }
   }, [iframe, currentSeconds]);
 
-
   return (
     <div className="flex flex-col w-full">
-      <div className="bg-neutral-900 text-neutral-400 flex">
+      <div className="flex">
         <div className="flex">
           <Link
             to="/"
-            className="px-1 pl-3 py-2 text-neutral-200 font-bold hover:text-white hover:underline"
+            className="px-3 py-2 bg-neutral-900 flex items-center hover:bg-neutral-800 text-neutral-200 hover:text-white"
           >
-            Timer
+            <Grid2x2Icon size={14} />
           </Link>
-          <div className="px-1 py-2 text-neutral-400">{meta.name}</div>
+          <div className="px-3 py-2">
+            {meta.name}
+            {` `}
+            <span className="text-neutral-400">@{meta.url}</span>
+          </div>
         </div>
-        <div className="text-neutral-400 justify-end flex gap-2 items-center grow text-right">
+        <div className="justify-end flex grow">
+          <Link
+            to={`/skins`}
+            className="hover:text-white px-3 flex items-center py-2 bg-neutral-900 hover:bg-neutral-800"
+          >
+            <ListIcon size={13} />
+          </Link>
           <Link
             to={`/skin/${encodeURIComponent(randomThemeId)}`}
-            className="px-1 py-2 hover:text-white"
+            className="hover:text-white px-3 flex items-center py-2 bg-neutral-900 hover:bg-neutral-800"
           >
-            <ShuffleIcon size={14} />
+            <ShuffleIcon size={13} />
           </Link>
           <Link
-            className="px-1 py-2 pr-3 hover:text-white"
+            className="hover:text-white px-3 flex items-center py-2 bg-neutral-900 hover:bg-neutral-800"
             to={`/fullscreen/${encodeURIComponent(url)}`}
           >
-            <ExpandIcon size={14} />
+            <ExpandIcon size={13} />
           </Link>
         </div>
       </div>
-
       <div className="grow relative">
         <iframe
           className={`w-full h-full ${iframe ? "block" : "hidden"}`}
@@ -78,6 +92,7 @@ function Timer() {
           src={url}
         />
       </div>
+      {addedTask ? null : <Banner />}
     </div>
   );
 }
