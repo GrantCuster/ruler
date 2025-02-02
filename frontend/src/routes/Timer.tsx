@@ -7,9 +7,14 @@ import {
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
-import { secondsInHour, secondsInQuarterHour } from "../shared/consts";
-import { ExpandIcon, ShuffleIcon, ArrowLeftIcon, ListIcon, Grid2x2Icon } from "lucide-react";
+import {
+  ExpandIcon,
+  ShuffleIcon,
+  ListIcon,
+  Grid2x2Icon,
+} from "lucide-react";
 import Banner from "../components/Banner";
+import { useGetIframeData } from "../shared/utils";
 
 function Timer() {
   const params = useParams();
@@ -18,6 +23,7 @@ function Timer() {
   const [themeMap] = useAtom(themeMapAtom);
   const [themeIds] = useAtom(themeIdsAtom);
   const [addedTask] = useAtom(addedTaskAtom);
+  const iframeData = useGetIframeData();
 
   const otherThemeIds = themeIds.filter((id) => id !== params.encodedURL);
   const randomThemeId =
@@ -27,22 +33,8 @@ function Timer() {
   const meta = themeMap[url];
 
   useEffect(() => {
-    const nearestFifteen =
-      Math.floor(currentSeconds / secondsInQuarterHour) * secondsInQuarterHour;
-
     if (iframe) {
-      iframe.contentWindow?.postMessage(
-        {
-          type: "DATA",
-          payload: {
-            currentSeconds,
-            startTime: addedTask?.startTime || nearestFifteen,
-            duration: addedTask?.duration || secondsInHour / 2,
-            label: addedTask?.label || "Example",
-          },
-        },
-        "*",
-      );
+      iframe.contentWindow?.postMessage(iframeData, "*");
     }
   }, [iframe, currentSeconds]);
 

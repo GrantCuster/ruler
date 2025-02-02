@@ -1,3 +1,7 @@
+import { useAtom } from "jotai";
+import { secondsInHour, secondsInQuarterHour } from "./consts";
+import { addedTaskAtom, currentSecondsAtom } from "../atoms";
+
 export function dateToSeconds(date: Date) {
   return Math.floor(date.getTime() / 1000);
 }
@@ -75,4 +79,38 @@ export function secondsToReadableDurationLong(seconds: number): string {
   }
 
   return durationString.trim();
+}
+
+export function useGetIframeData() {
+  const [_currentSeconds] = useAtom(currentSecondsAtom);
+  const [addedTask] = useAtom(addedTaskAtom);
+
+  let currentSeconds = _currentSeconds;
+
+  const nearestFifteen =
+    Math.floor(currentSeconds / secondsInQuarterHour) * secondsInQuarterHour;
+
+  let startTime = addedTask?.startTime || nearestFifteen;
+  let duration = addedTask?.duration || secondsInHour / 2;
+  let label = addedTask?.label || "Example";
+
+  if (addedTask && startTime > currentSeconds) {
+    startTime = nearestFifteen;
+    duration = addedTask?.startTime - nearestFifteen;
+    label = `Time until "${addedTask?.label}"`;
+  }
+
+  if (addedTask && startTime + duration < currentSeconds) {
+    currentSeconds = startTime + duration;
+  }
+
+  return {
+    type: "DATA",
+    payload: {
+      currentSeconds,
+      startTime,
+      duration,
+      label,
+    },
+  };
 }

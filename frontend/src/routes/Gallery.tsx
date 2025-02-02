@@ -2,53 +2,40 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import {
-  currentSecondsAtom,
   galleryCursorAtom,
   galleryPerPageAtom,
   themeIdsAtom,
   themeMapAtom,
   addedTaskAtom,
 } from "../atoms";
-import { secondsInHour, secondsInQuarterHour } from "../shared/consts";
 import { ArrowRightIcon } from "lucide-react";
 import Header from "../components/Header";
 import Banner from "../components/Banner";
+import { useGetIframeData } from "../shared/utils";
+import HandleExportEnd from "../components/HandleTaskEnd";
+import HandleTaskEnd from "../components/HandleTaskEnd";
 
 function Gallery() {
   const [iframes, setIframes] = useState<Record<string, HTMLIFrameElement>>({});
-  const [currentSeconds] = useAtom(currentSecondsAtom);
   const [themeMap] = useAtom(themeMapAtom);
   const [themeIds] = useAtom(themeIdsAtom);
   const [galleryPerPage] = useAtom(galleryPerPageAtom);
   const [galleryCursor] = useAtom(galleryCursorAtom);
   const [addedTask] = useAtom(addedTaskAtom);
+  const iframeData = useGetIframeData();
 
   useEffect(() => {
     const iframeKeys = Object.keys(iframes);
-    const nearestFifteen =
-      Math.floor(currentSeconds / secondsInQuarterHour) * secondsInQuarterHour;
-
     for (let key of iframeKeys) {
-      iframes[key].contentWindow?.postMessage(
-        {
-          type: "DATA",
-          payload: {
-            currentSeconds,
-            startTime: addedTask?.startTime || nearestFifteen,
-            duration: addedTask?.duration || secondsInHour / 2,
-            label: addedTask?.label || "Example",
-          },
-        },
-        "*",
-      );
+      iframes[key].contentWindow?.postMessage(iframeData, "*");
     }
-  }, [iframes, currentSeconds, addedTask]);
+  }, [iframes, iframeData]);
 
   return (
     <div className="h-full w-full flex flex-col">
       <Header />
       <div
-        className="grow grid gap-px bg-neutral-800 border border-neutral-800 w-full h-full"
+        className="grow relative grid gap-px bg-neutral-800 border border-neutral-800 w-full h-full"
         style={{
           gridTemplateColumns: "repeat(2, 1fr)",
         }}
@@ -92,6 +79,7 @@ function Gallery() {
             </div>
           );
         })}
+        <HandleTaskEnd />
       </div>
       {addedTask ? null : <Banner />}
       <GalleryFooter />

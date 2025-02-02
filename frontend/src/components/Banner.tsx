@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import { addedTaskAtom, currentSecondsAtom } from "../atoms";
 import { secondsInDay, secondsInQuarterHour } from "../shared/consts";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   secondsToReadableDuration,
   secondsToReadableTime,
@@ -11,11 +11,21 @@ import { v4 as uuid } from "uuid";
 function Banner() {
   const [currentSeconds] = useAtom(currentSecondsAtom);
   const [duration, setDuration] = useState(secondsInQuarterHour * 2);
+  const [label, setLabel] = useState("");
+  const [startTime, setStartTime] = useState(0);
+
   const nearestFifteen =
     Math.floor(currentSeconds / secondsInQuarterHour) * secondsInQuarterHour;
   const flooredDay = Math.floor(currentSeconds / secondsInDay) * secondsInDay;
-  const [startTime, setStartTime] = useState(nearestFifteen);
-  const [label, setLabel] = useState("");
+
+  const nearestFifteenRef = useRef(nearestFifteen);
+
+  useEffect(() => {
+    if (nearestFifteenRef.current !== nearestFifteen) {
+      nearestFifteenRef.current = nearestFifteen;
+      setStartTime(nearestFifteen);
+    }
+  }, [nearestFifteen]);
 
   const [, setAddedTask] = useAtom(addedTaskAtom);
 
@@ -43,9 +53,18 @@ function Banner() {
         >
           {[...Array(5)].map((_, i) => {
             return (
-              <option value={nearestFifteen + secondsInQuarterHour * i}>
+              <option
+                value={
+                  nearestFifteen -
+                  secondsInQuarterHour +
+                  secondsInQuarterHour * i
+                }
+              >
                 {secondsToReadableTime(
-                  nearestFifteen - flooredDay + secondsInQuarterHour * i,
+                  nearestFifteen -
+                  flooredDay -
+                  secondsInQuarterHour +
+                  secondsInQuarterHour * i,
                 )}
               </option>
             );
