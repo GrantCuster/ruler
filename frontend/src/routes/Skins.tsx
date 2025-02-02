@@ -1,6 +1,7 @@
 import { useAtom } from "jotai";
 import { themeIdsAtom, themeMapAtom } from "../atoms";
 import Header from "../components/Header";
+import { Link } from "react-router";
 
 function Skins() {
   const [themeIds] = useAtom(themeIdsAtom);
@@ -26,8 +27,14 @@ function Skins() {
           <div className="font-bold">Add your own</div>
           <div className="flex-col">
             <div className="flex gap-2 items-center">
-              <input className="w-48 px-3 py-2 -ml-3 focus:outline-none" placeholder="Name" />
-              <input className="w-96 px-3 py-2 focus:outline-none" placeholder="URL" />
+              <input
+                className="w-48 px-3 py-2 -ml-3 focus:outline-none"
+                placeholder="Name"
+              />
+              <input
+                className="w-96 px-3 py-2 focus:outline-none"
+                placeholder="URL"
+              />
               <button className="rounded-full px-5 bg-neutral-900 hover:bg-neutral-800 text-neutral-400 py-2">
                 add
               </button>
@@ -35,16 +42,20 @@ function Skins() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <div className=" font-bold px-3">{themeIds.length} skins</div>
+      <div className="flex flex-col">
+        <div className="font-bold px-3 py-1">{themeIds.length} skins</div>
         {themeIds.map((id) => {
           const theme = themeMap[id];
           return (
-            <div key={theme.url} className="flex gap-2 px-3 overflow-x-auto hover:bg-neutral-900">
+            <Link
+              key={theme.url}
+              to={`/skin/${encodeURIComponent(theme.url)}`}
+              className="flex py-1 px-3 overflow-x-auto hover:bg-neutral-900"
+            >
               <div className="w-48">{theme.name}</div>
               <div className="text-neutral-400 w-96">{theme.url}</div>
               <div className="text-neutral-600 w-48">standard</div>
-            </div>
+            </Link>
           );
         })}
       </div>
